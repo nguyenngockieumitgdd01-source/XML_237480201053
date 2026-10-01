@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Chọn môn học</title>
+
+    <style>
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h2>
+        Các môn học có nhà xuất bản Minh Khai
+    </h2>
+
+
+    <table>
+
+        <tr>
+
+            <th>STT</th>
+
+            <th>Tên môn học</th>
+
+            <th>Nhà xuất bản</th>
+
+            <th>Tác giả</th>
+
+        </tr>
+
+
+        <tbody id="data">
+
+        </tbody>
+
+    </table>
+
+
+    <script>
+
+        fetch("dsmonhoc.xml")
+
+        .then(function(response) {
+
+            return response.text();
+
+        })
+
+        .then(function(data) {
+
+
+            var parser = new DOMParser();
+
+
+            var xml = parser.parseFromString(
+                data,
+                "text/xml"
+            );
+
+
+            var subjects =
+                xml.getElementsByTagName("subject");
+
+
+            var result = "";
+
+
+            var stt = 1;
+
+
+            for (var i = 0; i < subjects.length; i++) {
+
+
+                var title =
+                    subjects[i]
+                    .getElementsByTagName("title")[0]
+                    .textContent;
+
+
+                var publisher =
+                    subjects[i]
+                    .getElementsByTagName("publisher")[0]
+                    .textContent;
+
+
+                var author =
+                    subjects[i]
+                    .getElementsByTagName("author")[0]
+                    .textContent;
+
+
+                if (publisher.trim() == "Minh Khai") {
+
+
+                    result += "<tr>";
+
+
+                    result += "<td>";
+                    result += stt;
+                    result += "</td>";
+
+
+                    result += "<td>";
+                    result += title;
+                    result += "</td>";
+
+
+                    result += "<td>";
+                    result += publisher;
+                    result += "</td>";
+
+
+                    result += "<td>";
+                    result += author;
+                    result += "</td>";
+
+
+                    result += "</tr>";
+
+
+                    stt++;
+
+                }
+
+            }
+
+
+            document.getElementById("data").innerHTML =
+                result;
+
+        });
+
+    </script>
+
+</body>
+
+</html>

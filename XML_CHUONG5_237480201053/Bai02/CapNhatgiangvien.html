@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật giảng viên</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 90%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Cập nhật đơn vị giảng viên</h2>
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Họ tên giảng viên</th>
+            <th>Ngành</th>
+            <th>Đơn vị</th>
+        </tr>
+        <tbody id="data">
+        </tbody>
+    </table>
+    <script>
+        fetch("hosogiangvien.xml")
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            var parser = new DOMParser();
+            var xml = parser.parseFromString(
+                data,
+                "text/xml"
+            );
+            var giangvien =
+                xml.getElementsByTagName("giangvien");
+            var result = "";
+            for (var i = 0; i < giangvien.length; i++) {
+                var hoten =
+                    giangvien[i]
+                    .getElementsByTagName("hoten")[0]
+                    .textContent;
+                var nganh =
+                    giangvien[i]
+                    .getElementsByTagName("nganh")[0]
+                    .textContent;
+                var donvi =
+                    giangvien[i]
+                    .getElementsByTagName("donvi")[0]
+                    .textContent;
+                if (hoten.trim() == "Phạm Thanh Loan") {
+                    giangvien[i]
+                    .getElementsByTagName("donvi")[0]
+                    .textContent = "Cơ bản";
+                    donvi = "Cơ bản";
+                }
+                result += "<tr>";
+                result += "<td>";
+                result += i + 1;
+                result += "</td>";
+                result += "<td>";
+                result += hoten;
+                result += "</td>";
+                result += "<td>";
+                result += nganh;
+                result += "</td>";
+                result += "<td>";
+                result += donvi;
+                result += "</td>";
+                result += "</tr>";
+            }
+            document.getElementById("data").innerHTML =
+                result;
+        });
+    </script>
+</body>
+</html>
