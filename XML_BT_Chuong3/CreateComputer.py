@@ -22,3 +22,5 @@ tree = ET.ElementTree(root)
 # Ghi ra file Computer.xml
 tree.write("Computer.xml", encoding="utf-8", xml_declaration=True)
 print("Da tao file Computer.xml thanh cong!")
+
+#Tạo một tập tin XML lưu thông tin máy tính 
